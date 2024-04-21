@@ -15,12 +15,11 @@ public class Main {
     public static void main(String[] args) {
         String filename = "C:\\Java\\data_text.txt";
         if (!readDataFromFile(filename)) {
-            System.out.println("Error reading data from file.");
+            System.out.println("Can`t reading data from file.");
             return;
         }
 
-        buildInvertedIndex();
-
+        buildIndex();
         while (true) {
             displayMenu();
             int menuNumber = scanner.nextInt();
@@ -36,7 +35,7 @@ public class Main {
                     printAllPeople();
                     break;
                 default:
-                    System.out.println("Incorrect option! Try again.");
+                    System.out.println("Incorrect option.");
                     break;
             }
         }
@@ -53,20 +52,19 @@ public class Main {
         try {
             File file = new File(filename);
             Scanner fileScanner = new Scanner(file);
-            int numberLine = 0;
+            int numberOFLine = 0;
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine().trim();
                 peopleData.add(line);
-                numberLine++;
+                numberOFLine++;
             }
             return true;
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
             return false;
         }
     }
 
-    public static void buildInvertedIndex() {
+    public static void buildIndex() {
         for (int i = 0; i < peopleData.size(); i++) {
             String[] words = peopleData.get(i).split("\\s+");
             for (String word : words) {
