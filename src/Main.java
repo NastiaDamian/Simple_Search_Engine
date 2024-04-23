@@ -79,7 +79,7 @@ public class Main {
         System.out.println("Select a matching strategy: ALL, ANY, NONE");
         String strategy = scanner.nextLine().toUpperCase();
         System.out.println("Enter a name or email to search all suitable people:");
-        String query = scanner.nextLine().trim().toLowerCase();
+        String query = scanner.nextLine().trim().toUpperCase();
         List<String> foundPeople = search(query, strategy);
         displayResults(foundPeople);
     }
@@ -89,6 +89,11 @@ public class Main {
         String[] wordsQuery = query.split("\\s+");
         for (String word : wordsQuery) {
             word = word.toLowerCase();
+            if (strategy.equals("NONE")) {
+                for (int i = 0; i < peopleData.size(); i++) {
+                    indexResult.add(i);
+                }
+            }
             if (invertedIndex.containsKey(word)) {
                 List<Integer> wordIndexes = invertedIndex.get(word);
                 switch (strategy) {
@@ -103,8 +108,7 @@ public class Main {
                         indexResult.addAll(wordIndexes);
                         break;
                     case "NONE":
-                        Set<Integer> temp = new HashSet<>(wordIndexes);
-                        indexResult.addAll(peopleData.size() > temp.size() ? temp : indexResult);
+                        wordIndexes.forEach(indexResult::remove);
                         break;
                     default:
                         System.out.println("Invalid strategy.");
